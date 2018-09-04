@@ -1,0 +1,30 @@
+#: import main jukebox
+#: import ListAdapter kivy.adapters.listadapter.ListAdapter
+#: import ListItemButton kivy.uix.listview.ListItemButton
+
+<JukeboxWidget>:
+    orientation: "horizontal"
+    padding: 10
+    spacing: 10
+    lista_musicas: lista_de_musicas
+    musica_atual: musicaatual
+
+    ListView:
+        id: lista_de_musicas
+        adapter:
+            ListAdapter(data = [], cls=main.Lista)
+
+    BoxLayout:
+        orientation: "vertical"
+
+        Button:
+            text: "Selecionar"
+            on_press: root.pegar_nome()
+
+        Label:      
+            text: "Musica atual:"
+            
+        Label:      
+            id: musicaatual
+            text: ""
+    
