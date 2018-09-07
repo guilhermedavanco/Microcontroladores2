@@ -4,8 +4,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty
 from kivy.uix.listview import ListItemButton
 from kivy.core.audio import SoundLoader
-
-from pygame import mixer  # Load the required library
+from pygame import mixer
 
 mixer.init()
 
@@ -33,6 +32,9 @@ class JukeboxWidget(BoxLayout):
     def atualizar_lista(self):
         self.lista_musicas.adapter.data.extend(self.arquivos)
         self.lista_musicas._trigger_reset_populate()
+
+    def parar_musica(self):
+        mixer.music.stop()
 
 
 class JukeboxApp(App):

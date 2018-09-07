@@ -17,9 +17,17 @@
     BoxLayout:
         orientation: "vertical"
 
-        Button:
-            text: "Selecionar"
-            on_press: root.pegar_nome()
+        BoxLayout:
+            orientation: "horizontal"
+            Button:
+                background_normal: "./play.png"
+                background_down: "./play_dn.png"
+                on_press: root.pegar_nome()
+
+            Button:
+                background_normal: "./stop.png"
+                background_down: "./stop_dn.png"
+                on_press: root.parar_musica()
 
         Label:      
             text: "Musica atual:"
