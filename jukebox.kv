@@ -9,39 +9,48 @@
     lista_musicas: lista_de_musicas
     musica_atual: musicaatual
 
-    ListView:
-        id: lista_de_musicas
-        adapter:
-            ListAdapter(data = [], cls=main.Lista)
-
-    BoxLayout:
-        orientation: "vertical"
-        
-        AnchorLayout:
-            anchor_y: "bottom"
-            Label:      
-                size_hint: None, None
-                id: musicaatual
-                text: ""
-
-        AnchorLayout:
-            anchor_y: "top"
+    ScreenManager:
+        id: sm
+        Screen:
+            name: "principal"
             BoxLayout:
-                orientation: "horizontal"
-                size_hint_y: None
-                height: 100
-                size_hint_x: None
-                width: 200
+                orientation:"horizontal"
+                ListView:
+                    id: lista_de_musicas
+                    adapter:
+                        ListAdapter(data = [], cls=main.Lista)
 
-                Button:
-                    background_normal: "./play.png"
-                    background_down: "./play_dn.png"
-                    on_press: root.pegar_nome()
+                BoxLayout:
+                    orientation: "vertical"
+                    
+                    AnchorLayout:
+                        anchor_y: "bottom"
+                        Label:      
+                            size_hint: None, None
+                            id: musicaatual
+                            text: ""
 
-                Button:
-                    background_normal: "./stop.png"
-                    background_down: "./stop_dn.png"
-                    on_press: root.parar_musica()
-                
+                    AnchorLayout:
+                        anchor_y: "top"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint_y: None
+                            height: 100
+                            size_hint_x: None
+                            width: 200
+
+                            Button:
+                                background_normal: "./play.png"
+                                background_down: "./play_dn.png"
+                                on_press: root.pegar_nome()
+
+                            Button:
+                                background_normal: "./stop.png"
+                                background_down: "./stop_dn.png"
+                                on_press: root.parar_musica()
+        Screen:
+            name: "branca"
+            BoxLayout:
+                orientation:"horizontal"
 
     
