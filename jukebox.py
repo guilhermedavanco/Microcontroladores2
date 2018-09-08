@@ -25,7 +25,7 @@ class JukeboxWidget(BoxLayout):
         if self.lista_musicas.adapter.selection:
             mixer.music.stop()
             selection = self.lista_musicas.adapter.selection[0].text
-            self.musica_atual.text = selection
+            self.musica_atual.text = 'Musica atual:\n' + selection
             mixer.music.load('./Musicas/'+selection)
             mixer.music.play()
 
