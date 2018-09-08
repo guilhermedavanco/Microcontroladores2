@@ -18,6 +18,7 @@ class JukeboxWidget(BoxLayout):
 
     lista_musicas = ObjectProperty()
     musica_atual = ObjectProperty()
+    screen_manager = ObjectProperty()
     arquivos = os.listdir(
         "./Musicas")
     sound = None
@@ -36,6 +37,12 @@ class JukeboxWidget(BoxLayout):
 
     def parar_musica(self):
         mixer.music.stop()
+
+    def mudar_pagina(self):
+        if self.screen_manager.current == "principal":
+            self.screen_manager.current = "branca"
+        else:
+            self.screen_manager.current = "principal"
 
 
 class JukeboxApp(App):

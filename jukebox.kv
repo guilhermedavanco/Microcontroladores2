@@ -4,10 +4,9 @@
 
 <JukeboxWidget>:
     orientation: "horizontal"
-    padding: 10
-    spacing: 10
     lista_musicas: lista_de_musicas
     musica_atual: musicaatual
+    screen_manager: sm
 
     ScreenManager:
         id: sm
@@ -44,13 +43,15 @@
                                 background_down: "./play_dn.png"
                                 on_press: root.pegar_nome()
 
+
                             Button:
                                 background_normal: "./stop.png"
                                 background_down: "./stop_dn.png"
                                 on_press: root.parar_musica()
         Screen:
             name: "branca"
-            BoxLayout:
-                orientation:"horizontal"
+            Button:
+                text: "Aperte"
+                on_press: root.mudar_pagina()
 
     
