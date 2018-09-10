@@ -15,7 +15,8 @@ class Lista(ListItemButton):
 
 
 class JukeboxWidget(BoxLayout):
-
+    qtde_tocada = 0
+    quant_text = ObjectProperty()
     lista_musicas = ObjectProperty()
     musica_atual = ObjectProperty()
     screen_manager = ObjectProperty()
@@ -30,7 +31,15 @@ class JukeboxWidget(BoxLayout):
             self.musica_atual.text = 'Musica atual:\n' + selection
             mixer.music.load('./Musicas/'+selection)
             mixer.music.play()
+            self.qtde_tocada += 1
+            self.quant_text.text = str(self.qtde_tocada)
+            if self.qtde_tocada == 10:
+                self.mudar_pagina()
+                self.qtde_tocada = 0
+                self.quant_text.text = str(self.qtde_tocada)
 
+        
+        
     def atualizar_lista(self):
         self.lista_musicas.adapter.data.extend(self.arquivos)
         self.lista_musicas._trigger_reset_populate()

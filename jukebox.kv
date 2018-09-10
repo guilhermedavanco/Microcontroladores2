@@ -7,6 +7,7 @@
     lista_musicas: lista_de_musicas
     musica_atual: musicaatual
     screen_manager: sm
+    quant_text: tocadas
 
     ScreenManager:
         id: sm
@@ -27,6 +28,9 @@
                         Label:      
                             size_hint: None, None
                             id: musicaatual
+                            text: ""
+                        Label:
+                            id: tocadas
                             text: ""
 
                     AnchorLayout:
