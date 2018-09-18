@@ -11,6 +11,13 @@
 
     ScreenManager:
         id: sm
+
+        Screen:
+            name: "branca"
+            Button:
+                text: "Aperte"
+                on_press: sm.current = "principal"
+
         Screen:
             name: "principal"
             BoxLayout:
@@ -52,10 +59,6 @@
                                 background_normal: "./stop.png"
                                 background_down: "./stop_dn.png"
                                 on_press: root.parar_musica()
-        Screen:
-            name: "branca"
-            Button:
-                text: "Aperte"
-                on_press: root.mudar_pagina()
+
 
     

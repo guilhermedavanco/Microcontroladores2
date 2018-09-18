@@ -6,7 +6,10 @@ from kivy.uix.listview import ListItemButton
 from kivy.core.audio import SoundLoader
 from pygame import mixer
 from kivy.uix.screenmanager import ScreenManager, Screen
+import RPi.GPIO as GPIO
+from kivy.config import Config
 
+Config.set('graphics','fullscreen','0')
 mixer.init()
 
 
@@ -22,7 +25,7 @@ class JukeboxWidget(BoxLayout):
     screen_manager = ObjectProperty()
     arquivos = os.listdir(
         "./Musicas")
-    sound = None
+    sound = None 
 
     def pegar_nome(self):
         if self.lista_musicas.adapter.selection:
@@ -34,7 +37,7 @@ class JukeboxWidget(BoxLayout):
             self.qtde_tocada += 1
             self.quant_text.text = str(self.qtde_tocada)
             if self.qtde_tocada == 10:
-                self.mudar_pagina()
+                self.mudar_pagina_musicas()
                 self.qtde_tocada = 0
                 self.quant_text.text = str(self.qtde_tocada)
 
@@ -47,16 +50,25 @@ class JukeboxWidget(BoxLayout):
     def parar_musica(self):
         mixer.music.stop()
 
-    def mudar_pagina(self):
-        if self.screen_manager.current == "principal":
-            self.screen_manager.current = "branca"
-        else:
-            self.screen_manager.current = "principal"
+    def mudar_pagina_dinheiro(self):
+        self.screen_manager.current = "principal"
+
+    def mudar_pagina_musicas(self):
+        self.screen_manager.current = "branca"
+            
 
 
 class JukeboxApp(App):
 
     jk = None
+    dinheiro = 0
+    
+    def HandlerDinheiro(self, pin):
+        self.dinheiro += 1
+        if self.dinheiro >= 4:
+            self.jk.mudar_pagina_dinheiro()
+            self.dinheiro = 0
+        
 
     def build(self):
         self.jk = JukeboxWidget()
@@ -64,7 +76,17 @@ class JukeboxApp(App):
 
     def on_start(self):
         self.jk.atualizar_lista()
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(23,GPIO.IN)
+        GPIO.add_event_detect(23,GPIO.RISING)
+        GPIO.add_event_callback(23,self.HandlerDinheiro)
+
+
+    def on_stop(self):
+        GPIO.cleanup()
 
 
 juke = JukeboxApp()
 juke.run()
+
+
