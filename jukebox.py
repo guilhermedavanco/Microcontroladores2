@@ -9,8 +9,11 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 import RPi.GPIO as GPIO
 from kivy.config import Config
 
-Config.set('graphics','fullscreen','0')
+Config.set('graphics', 'fullscreen', '0')
 mixer.init()
+
+pin_noteiro = 23
+pin_presenca = 24
 
 
 class Lista(ListItemButton):
@@ -25,7 +28,7 @@ class JukeboxWidget(BoxLayout):
     screen_manager = ObjectProperty()
     arquivos = os.listdir(
         "./Musicas")
-    sound = None 
+    sound = None
 
     def pegar_nome(self):
         if self.lista_musicas.adapter.selection:
@@ -37,12 +40,10 @@ class JukeboxWidget(BoxLayout):
             self.qtde_tocada += 1
             self.quant_text.text = str(self.qtde_tocada)
             if self.qtde_tocada == 10:
-                self.mudar_pagina_musicas()
                 self.qtde_tocada = 0
                 self.quant_text.text = str(self.qtde_tocada)
+                self.mudar_pagina_musicas()
 
-        
-        
     def atualizar_lista(self):
         self.lista_musicas.adapter.data.extend(self.arquivos)
         self.lista_musicas._trigger_reset_populate()
@@ -55,20 +56,32 @@ class JukeboxWidget(BoxLayout):
 
     def mudar_pagina_musicas(self):
         self.screen_manager.current = "branca"
-            
+
+    def mudar_pagina_presenca_high():
+        if self.screen_manager.current == "branca":
+            self.screen_manager.current = "dinheiro"
+
+    def mudar_pagina_presenca_low():
+        if self.screen_manager.current == "dinheiro":
+            self.screen_manager.current = "branca"
 
 
 class JukeboxApp(App):
 
     jk = None
     dinheiro = 0
-    
+
     def HandlerDinheiro(self, pin):
         self.dinheiro += 1
         if self.dinheiro >= 4:
             self.jk.mudar_pagina_dinheiro()
             self.dinheiro = 0
-        
+
+    def HandlerPresenca(self, pin):
+        if GPIO.input(pin_presenca):
+            self.jk.mudar_pagina_presenca_high()
+        else:
+            self.jk.mudar_pagina_presenca_low()
 
     def build(self):
         self.jk = JukeboxWidget()
@@ -77,10 +90,12 @@ class JukeboxApp(App):
     def on_start(self):
         self.jk.atualizar_lista()
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(23,GPIO.IN)
-        GPIO.add_event_detect(23,GPIO.RISING)
-        GPIO.add_event_callback(23,self.HandlerDinheiro)
-
+        GPIO.setup(pin_noteiro, GPIO.IN)
+        GPIO.add_event_detect(pin_noteiro, GPIO.RISING)
+        GPIO.add_event_callback(pin_noteiro, self.HandlerDinheiro)
+        GPIO.setup(pin_presenca, GPIO.IN)
+        GPIO.add_event_detect(pin_presenca, GPIO.BOTH)
+        GPIO.add_event_callback(pin_presenca, self.HandlerPresenca)
 
     def on_stop(self):
         GPIO.cleanup()
@@ -88,5 +103,3 @@ class JukeboxApp(App):
 
 juke = JukeboxApp()
 juke.run()
-
-
