@@ -55,6 +55,9 @@ class JukeboxWidget(BoxLayout):
 
     def mudar_pagina_musicas(self):
         self.screen_manager.current = "branca"
+        
+    def mudar_pagina_presenca(self):
+        self.screen_manager.current = "dinheiro"
             
 
 
@@ -65,9 +68,12 @@ class JukeboxApp(App):
     
     def HandlerDinheiro(self, pin):
         self.dinheiro += 1
-        if self.dinheiro >= 4:
+        if self.dinheiro >= 2:
             self.jk.mudar_pagina_dinheiro()
             self.dinheiro = 0
+            
+    def HandlerPresenca(self, pin):
+        self.jk.mudar_pagina_presenca()
         
 
     def build(self):
@@ -78,8 +84,11 @@ class JukeboxApp(App):
         self.jk.atualizar_lista()
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(23,GPIO.IN)
+        GPIO.setup(24,GPIO.IN)
         GPIO.add_event_detect(23,GPIO.RISING)
         GPIO.add_event_callback(23,self.HandlerDinheiro)
+        GPIO.add_event_detect(24,GPIO.RISING)
+        GPIO.add_event_callback(24,self.HandlerPresenca)
 
 
     def on_stop(self):
