@@ -15,13 +15,18 @@
         Screen:
             name: "branca"
             Label:
-                text: "Aperte"
+                text: "Bem vindo"
 
 
         Screen:
             name: "dinheiro"
-            Label:
-                text: "Insira 2 conto"
+            BoxLayout
+                orientation:"vertical"
+                Image:
+                    source: "./imagem.jpg"
+                Label:
+                    text: "Insira 2 reais"
+                    font_size: 40
 
 
         Screen:
@@ -42,9 +47,11 @@
                             size_hint: None, None
                             id: musicaatual
                             text: ""
+                            font_size: 25
                         Label:
                             id: tocadas
                             text: ""
+                            font_size: 25
 
                     AnchorLayout:
                         anchor_y: "top"

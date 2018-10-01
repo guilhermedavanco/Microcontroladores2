@@ -8,6 +8,7 @@ from pygame import mixer
 from kivy.uix.screenmanager import ScreenManager, Screen
 import RPi.GPIO as GPIO
 from kivy.config import Config
+from kivy.uix.image import Image
 
 Config.set('graphics','fullscreen','0')
 mixer.init()
@@ -41,8 +42,7 @@ class JukeboxWidget(BoxLayout):
                 self.qtde_tocada = 0
                 self.quant_text.text = str(self.qtde_tocada)
 
-        
-        
+                
     def atualizar_lista(self):
         self.lista_musicas.adapter.data.extend(self.arquivos)
         self.lista_musicas._trigger_reset_populate()
@@ -57,9 +57,9 @@ class JukeboxWidget(BoxLayout):
         self.screen_manager.current = "branca"
         
     def mudar_pagina_presenca(self):
-        self.screen_manager.current = "dinheiro"
+        if self.screen_manager.current == "branca":
+            self.screen_manager.current = "dinheiro"
             
-
 
 class JukeboxApp(App):
 
@@ -74,7 +74,6 @@ class JukeboxApp(App):
             
     def HandlerPresenca(self, pin):
         self.jk.mudar_pagina_presenca()
-        
 
     def build(self):
         self.jk = JukeboxWidget()
